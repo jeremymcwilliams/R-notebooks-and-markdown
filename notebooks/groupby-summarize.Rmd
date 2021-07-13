@@ -1,0 +1,169 @@
+---
+title: "Group By / Summarize Palooza"
+output: html_notebook
+---
+
+
+## Group By / Summarize Palooza
+
+
+For today's coding club, we're going to do a number of examples using R's "Group By / Summarize" technique on datasets. R guru Hadley Wickham has coined this approach the "Split-Apply-Combine" strategy (https://www.jstatsoft.org/article/view/v040i01), in which you:
+
+* Split - break a big problem into manageable pieces
+* Apply - operate on each piece individually
+* Combine - put all the pieces back together
+
+
+Let's start by loading the tidyverse, and looking at our penguins dataset again:
+
+```{r}
+library(tidyverse)
+library(dslabs) #loads some datasets for later...
+library(palmerpenguins)
+
+penguins
+
+
+```
+
+As a refresher, the penguins dataset is in "tidy" format, in which:
+
+* each column is a variable
+* each row is an observation
+* each cell is a single value
+
+Having our data in "tidy" format is good, but it doesn't immediately give us any real insight on the data. Looking at our dataset, there are a number of different questions we could ask / investigate:
+
+* Do the average weights of penguins differ by species? By island? By year?
+* How do flipper lengths of males vs. females compare? 
+
+Let's tackle the flipper length question first. Using the Split-Apply-Combine strategy, we'll employ the dplyr group_by() and summarize() functions. The "group_by()" functions handles the "split" portion, as we can split our data and group by the 'sex' column. With "summarize()", we can "apply" an operation on this splitting (in this case, calculate the mean for flipper_length), and then combine it back together to see the results:
+
+
+```{r}
+
+# The "pipe" operator (%>%) can be though of as "AND THEN"
+
+flippers<-penguins %>% group_by(sex) %>% summarise(avg_flipper_length=mean(flipper_length_mm))
+
+flippers
+
+
+```
+
+With summarise, you can create multiple operations on your data if you like:
+
+```{r}
+
+flippers2<-penguins %>% group_by(sex) %>% summarise(
+  avg=mean(flipper_length_mm),
+  standard_dev=sd(flipper_length_mm), 
+  minimum=min(flipper_length_mm), 
+  maximum=max(flipper_length_mm)
+  )
+
+flippers2
+
+
+```
+
+YOUR TURN
+
+Calculate the average mass of all penguins by year:
+
+```{r}
+
+
+
+```
+
+
+What is the differences in mean values bill depth by species? How about by island?
+
+```{r}
+
+
+
+```
+
+
+What is the difference in bill depth between males and females of just Adelie penguins?
+(Hint: you might consider using the filter() function first)
+
+```{r}
+
+
+
+
+
+```
+
+
+We can also use group_by() on multiple variables:
+
+```{r}
+
+bills<-penguins %>% group_by(species, sex) %>% summarize(avg=mean(bill_length_mm)) 
+
+bills
+
+
+```
+
+We can also add the "spread()" function when using multiple variables, to view the data in a slightly different way:
+
+```{r}
+
+
+bills2<-penguins %>% group_by(species, sex) %>% summarize(avg=mean(bill_length_mm)) %>% spread(species, avg)
+
+bills2
+
+```
+
+
+
+
+
+
+YOUR TURN:
+
+Calculate the average weight for each species, grouped by year. Try it a second time using "spread()", just to see the difference:
+
+```{r}
+
+
+
+```
+
+
+
+It's still your turn! Consider some of the following datasets:
+mtcars 
+(from 1974 Motor Trends, contains fuel consumption and 10 aspects of automobile design and performance for 32 automobiles)
+
+iris
+(The data set contains 3 classes of 50 instances each, where each class refers to a type of iris plant)
+
+gapminder 
+(This dataset includes health and income outcomes for 184 countries from 1960 to 2016.)
+
+
+Examine one of the datasets (you can just print it in a code block, or use the head() function on one). What kinds of questions might you ask? How could group by/summarize help you answer them (or at least show patterns, etc.)? Try out some possibilities below:
+
+
+```{r}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
