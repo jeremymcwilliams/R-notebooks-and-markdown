@@ -24,4 +24,4 @@ After running the command above, you'll be prompted whether to download to your 
 * Once the project loads, run `install.packages("tidyverse")` in the console.
 
 
-#### To get started, click "workshop-notebook.Rmd" in the files window, and then minimize the console window.
+#### To get started, click "R-Notebooks-Markdown.Rmd" in the files window, and then minimize the console window.
